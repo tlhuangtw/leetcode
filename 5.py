@@ -1,6 +1,6 @@
-# ref: https://discuss.leetcode.com/topic/7144/python-o-n-2-method-with-some
-#              -optimization-88ms
-
+# Greedy Look-back Algorithm
+# Case 1: increase the max length by 2 to form a new odd-length palindrome
+# Case 2: increase the max length by 1 to form a new even-length palindrome
 
 class Solution:
     def longestPalindrome(self, s: str) -> str:
