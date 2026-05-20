@@ -2,24 +2,28 @@ class Solution {
 public:
     int longestCommonSubsequence(string text1, string text2) {
         if (text1.size() < text2.size()) {
-            std::swap(text1, text2);
+            return longestCommonSubsequence(text2, text1);
         }
-        std::vector<std::vector<int>> dp(2, std::vector<int>(text2.size() + 1, 0));
-        int cur = 1, pre = 0;
+        int m = text1.size();
+        int n = text2.size();
+        std::vector<int> dp(n + 1, 0);
 
-        for (int i = 0; i < text1.size(); i++) {
-            for (int j = 0; j < text2.size(); j++) {
-                if (text1[i] == text2[j]) {
-                    dp[cur][j + 1] = dp[pre][j] + 1;
+        for (int i = 1; i <= m; ++i) {
+            int dp_i_1_j_1 = 0; // act as dp[i - 1][j - 1]
+
+            for (int j = 1; j <= n; ++j) {
+                int dp_i_1_j = dp[j]; // act as dp[i - 1][j]
+
+                if (text1[i - 1] == text2[j - 1]) {
+                    dp[j] = dp_i_1_j_1 + 1;
                 } else {
-                    dp[cur][j + 1] = max(dp[pre][j + 1], dp[cur][j]);
+                    dp[j] = max(dp[j], dp[j - 1]);
                 }
+                dp_i_1_j_1 = dp_i_1_j;
             }
-            cur = 1 - cur;
-            pre = 1 - pre;
         }
 
-        return dp[1 - cur].back();
+        return dp.back();
     }
 };
 
