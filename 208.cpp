@@ -1,26 +1,26 @@
 class TrieNode {
 public:
-    unordered_map<char, TrieNode*> children;
+    unordered_map<char, unique_ptr<TrieNode>> children;
     bool isEndOfWord;
     TrieNode(): isEndOfWord(false) {}
 };
 
 class Trie {
 private:
-    TrieNode* root;
+    unique_ptr<TrieNode> root;
 public:
     Trie() {
-        root = new TrieNode();
+        root = make_unique<TrieNode>();
     }
     
     void insert(string word) {
-        TrieNode* cur = root;
+        TrieNode* cur = root.get();
 
         for (const auto& c : word) {
             if (cur->children.find(c) == cur->children.end()) {
-                cur->children[c] = new TrieNode();
+                cur->children[c] = make_unique<TrieNode>();
             }
-            cur = cur->children[c];
+            cur = cur->children[c].get();
         }
 
         cur->isEndOfWord = true;
@@ -36,13 +36,13 @@ public:
     }
 private:
     TrieNode* findNode(string word) {
-        TrieNode* cur = root;
+        TrieNode* cur = root.get();
 
         for (const auto& c : word) {
             if (cur->children.find(c) == cur->children.end()) {
                 return nullptr;              
             }
-            cur = cur->children[c];
+            cur = cur->children[c].get();
         }
 
         return cur;
